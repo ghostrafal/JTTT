@@ -11,6 +11,8 @@ using HtmlAgilityPack;
 using System.Net;
 using System.Net.Mail;
 using System.IO;
+using System.Diagnostics;
+using System.Threading;
 namespace JTTT
 {
     public partial class Form1 : Form
@@ -66,8 +68,14 @@ namespace JTTT
 
             }
         }
+        //Funckja obsluguje historie wykonania akcji.
+        public void New_Log(string lines)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter("jttt_logger.txt", true);
+            file.WriteLine(lines);
+            file.Close();
+        }
 
-        
         public Form1()
         {
             InitializeComponent();
@@ -116,6 +124,7 @@ namespace JTTT
                     {
                         string scr = node.GetAttributeValue("src", "");
                         string filename;
+                        New_Log(", zrodlo: " + scr + ", emial: " + emial);
                         MessageBox.Show(scr);
                         filename=docHtml.Save(scr, "hehe.jpg");
                         docHtml.CreatEmail(filename, "sznur3@wp.pl", "dupadupa", emial);
